@@ -1,10 +1,10 @@
 Week 1 — Day 4: Network Security Fundamentals
 
-🎯 Objective
+Objective
 
 Learn the fundamentals of computer networking and understand how networking concepts relate to cybersecurity and network security.
 
-📚 Topics Covered
+ Topics Covered
 
 - Computer networks
 - LAN and WAN
@@ -18,7 +18,7 @@ Learn the fundamentals of computer networking and understand how networking conc
 - Network segmentation
 - Attack surface
 
-🧠 Key Concepts Learned
+ Key Concepts Learned
 
 Computer Network
 
@@ -81,7 +81,7 @@ Proper segmentation can limit an attacker's ability to move from a compromised d
 
 This introduced me to the concept of lateral movement, where an attacker attempts to move from one compromised system to other systems within a network.
 
-🧪 Hands-On Practice
+Hands-On Practice
 
 1. Network Configuration
 
@@ -129,7 +129,7 @@ Used:
 
 to observe how DNS resolves a domain name to an IP address.
 
-🔐 Security Takeaways
+Security Takeaways
 
 Today I learned that network security involves understanding how devices communicate before trying to secure them.
 
@@ -144,7 +144,7 @@ Important questions a security professional should ask include:
 - Is the network properly segmented?
 - Could an attacker move laterally after compromising a device?
 
-📌 What I Learned Today
+What I Learned Today
 
 I moved from basic cybersecurity concepts into practical network investigation using the Windows command line.
 
