@@ -89,3 +89,13 @@ Tools Used
  Reflection
 
 Today I learned how HTTPS protects web traffic and how TLS certificates are involved in establishing a secure connection. I also used command-line tools to inspect real TLS connections instead of only learning the concepts theoretically.
+
+Practical Evidence
+
+Google TLS Connection
+
+"Google TLS connection" (./google-tls.png)
+
+GitHub TLS Connection
+
+"GitHub TLS connection" (./github-tls.png)
