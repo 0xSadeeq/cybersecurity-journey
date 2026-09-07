@@ -1,0 +1,38 @@
+Objective
+I learnt how network ports work and how to identify the process and service associated with an open/listening port.
+
+Concepts learned
+A port is like a door through which network communication can reach a service.
+TCP provides connection-oriented, reliable communication.
+UDP is connectionless and generally faster but doesn't guarantee delivery.
+LISTENING means a service is waiting for incoming connections.
+A PID (Process ID) identifies a running process.
+svchost.exe can host Windows services.
+Port 135 is associated with Windows RPC services.
+An open port isn't automatically a vulnerability.
+
+
+Commands practiced
+netstat -ano
+tasklist
+tasklist /svc | findstr "500"
+
+My practical investigation
+Port: 135
+Protocol: TCP
+State: LISTENING
+PID: 500
+Process: svchost.exe
+Services: RpcEptMapper, RpcSs
+
+
+Common ports learned
+22    SSH
+53    DNS
+80    HTTP
+443   HTTPS
+3389  RDP
+
+Security lesson
+An open port does not automatically mean a system is compromised. 
+A security analyst should investigate what service is behind the port, why it is exposed, who can reach it, and whether that exposure is necessary.
