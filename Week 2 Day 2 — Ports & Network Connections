@@ -1,0 +1,147 @@
+
+
+Objective
+
+Learn how to identify network ports, active connections, processes using those ports, and the Windows services behind those processes.
+
+ What I Learned
+
+1. What is a Port?
+
+A port identifies a specific network service or application endpoint on a device.
+
+- IP address → identifies the device
+- Port → identifies the network service/endpoint
+
+Example:
+
+192.168.1.10:443
+
+"192.168.1.10" = IP address
+"443" = port commonly used for HTTPS
+
+2. Network Connection States
+
+I used:
+
+netstat -ano
+
+Important states:
+
+- LISTENING → a service is waiting for incoming connections.
+- ESTABLISHED → a connection has been successfully established.
+
+3. PID Investigation
+
+The "netstat -ano" command shows a PID (Process ID).
+
+I learned that the PID can be used to identify the process responsible for a network connection.
+
+I used:
+
+tasklist /FI "PID eq 5696"
+
+This identified:
+
+svchost.exe
+
+4. Investigating Windows Services
+
+I then used:
+
+tasklist /svc /FI "PID eq 5696"
+
+The services associated with the process were:
+
+- "RpcSs"
+- "RpcEptMapper"
+
+5. Port 5040 Investigation
+
+I investigated a listening port and found:
+
+TCP    0.0.0.0:5040    0.0.0.0:0    LISTENING    5696
+
+This taught me that:
+
+- "0.0.0.0:5040" means the service is listening on all IPv4 interfaces.
+- "5696" is the PID associated with the listening socket.
+- PID 5696 belongs to "svchost.exe".
+- "svchost.exe" was hosting "RpcSs" and "RpcEptMapper".
+
+6. HTTP Service Investigation
+
+I also explored the Windows HTTP Service using:
+
+netsh http show servicestate
+
+I learned about:
+
+- Service sessions
+- URL groups
+- Request queues
+- Windows HTTP Service
+
+I searched specifically for port 5040:
+
+netsh http show servicestate | findstr /i "5040"
+
+Port 5040 did not appear in the HTTP Service output, so I did not assume HTTP.sys was responsible for that port.
+
+ Cybersecurity Lesson
+
+A listening port is not automatically a vulnerability.
+
+When investigating a port, an analyst should ask:
+
+1. What port is open?
+2. What process owns it?
+3. What service is behind the process?
+4. Is the service legitimate?
+5. Who can reach the port?
+6. Is the exposure necessary?
+
+Investigation Chain
+
+PORT
+  ↓
+PID
+  ↓
+PROCESS
+  ↓
+WINDOWS SERVICE
+  ↓
+SECURITY ANALYSIS
+
+Commands Practiced
+
+netstat -ano
+
+netstat -ano | findstr ":5040"
+
+tasklist /FI "PID eq 5696"
+
+tasklist /svc /FI "PID eq 5696"
+
+netsh http show servicestate
+
+netsh http show servicestate | findstr /i "5040"
+
+Day 2 Checklist
+
+- Learned what ports are
+- Used "netstat"
+- Understood LISTENING and ESTABLISHED
+- Learned what a PID is
+- Identified a process from a PID
+- Investigated "svchost.exe"
+- Identified "RpcSs" and "RpcEptMapper"
+- Investigated port 5040
+- Learned basic port exposure concepts
+- Explored Windows HTTP Service
+
+ Key Takeaway
+
+Today I learned how to investigate network activity on a Windows computer instead of simply looking at open ports.
+
+I can now trace a network port back to the process and Windows services using it, which is an important foundation for defensive cybersecurity and incident investigation.
