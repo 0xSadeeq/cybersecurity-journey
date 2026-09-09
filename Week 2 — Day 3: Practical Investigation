@@ -1,0 +1,21 @@
+I investigated a Windows listening port and traced it back to its associated process and service.
+Result:
+Port: 49666
+PID: 2324
+Process: svchost.exe
+Service: Schedule
+State: RUNNING
+Exercise 2 — PID → Port
+I performed the investigation in the opposite direction by starting with a known PID and checking whether it had an associated network connection.
+Result:
+PID: 2324
+Process: svchost.exe
+Port: 49666
+ Key Lesson
+I learned that Windows investigations can work in both directions:
+PORT → PID → PROCESS → SERVICE → STATE
+or:
+PID → PORT
+This is useful when investigating either a suspicious network port or a suspicious process.
+ Day 3 Final Takeaway
+A cybersecurity analyst can correlate network activity with running processes and Windows services to understand what is happening on a host.
