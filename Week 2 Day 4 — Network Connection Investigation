@@ -1,0 +1,54 @@
+Objective
+Today I learned how to investigate active network connections on a Windows computer and trace a connection back to the process and Windows service responsible for it.
+Commands Used
+netstat -ano
+Used to view active network connections, ports, connection states, and Process IDs (PIDs).
+tasklist /fi "PID eq 4596"
+Used to identify the process associated with PID 4596.
+tasklist /svc /fi "PID eq 4596"
+Used to identify the Windows service running under the process.
+sc query DoSvc
+Used to check the status of the Delivery Optimization service.
+Investigation
+I identified the following established TCP connection:
+TCP    172.20.10.4:53692    196.49.32.6:80    ESTABLISHED    4596
+Breakdown
+Protocol: TCP
+Local IP: 172.20.10.4
+Local Port: 53692
+Remote/Foreign IP: 196.49.32.6
+Remote Port: 80
+Connection State: ESTABLISHED
+PID: 4596
+I then investigated PID 4596 and found:
+svchost.exe
+I used tasklist /svc to investigate further and identified the service as:
+DoSvc
+DoSvc is the Delivery Optimization Windows service.
+I then checked its status using sc query DoSvc and confirmed:
+STATE : 4 RUNNING
+Key Concepts Learned
+Local IP
+The local IP identifies my own computer/device involved in the connection.
+Remote/Foreign IP
+The remote or foreign IP identifies the other endpoint my computer is communicating with.
+ESTABLISHED
+This means an active TCP connection has been successfully established between the two endpoints.
+PID
+A Process ID identifies the specific process responsible for a network connection.
+Investigation Workflow
+The main workflow I learned today was:
+Network Connection
+        ↓
+       PID
+        ↓
+     Process
+        ↓
+     Service
+        ↓
+   Service State
+Security Lesson
+A legitimate Windows process such as svchost.exe does not automatically mean that every network connection associated with it is safe.
+As a security analyst, I should investigate the connection further by considering the remote IP, destination port, process, service, and whether the activity is expected.
+What I Learned Today
+I learned how to use Windows networking and process commands to investigate an active connection and identify the Windows service behind it. I also learned the difference between a local IP and a remote/foreign IP and how they are used during network investigations.
