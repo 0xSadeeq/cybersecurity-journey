@@ -1,0 +1,58 @@
+Objective
+Today I learned how to investigate active network connections on a Windows computer and identify the process and service responsible for a connection.
+What I Learned
+Local Address: The IP address and port belonging to my computer.
+Foreign Address: The remote IP address and port my computer is communicating with.
+PID: The Process ID used to identify the process responsible for a network connection.
+ESTABLISHED: Shows that an active connection exists between two endpoints.
+Port 443: Commonly used for HTTPS communication.
+svchost.exe: A Windows host process that can run Windows services.
+WpnService: Windows Push Notifications System Service.
+Ping: Used to test whether a remote IP responds over the network. Ping failure does not automatically mean an IP is malicious.
+Practical Investigation
+I used:
+netstat -ano | findstr ESTABLISHED
+
+to identify active network connections.
+I investigated several connections by following this process:
+Network Connection
+      ↓
+PID
+      ↓
+Process
+      ↓
+Service
+      ↓
+Executable Path
+      ↓
+Destination
+      ↓
+Security Verdict
+
+Investigation Example
+Local Address:   172.20.10.4:49446
+Foreign Address: 98.66.133.184:443
+State:           ESTABLISHED
+PID:             4304
+Process:         svchost.exe
+Service:         WpnService
+Service State:   RUNNING
+Path:            C:\Windows\System32\...
+
+The connection appeared normal because the process was a legitimate Windows svchost.exe process, the associated service was Windows Push Notifications System Service, and the executable was running from the expected Windows System32 directory.
+
+Commands Practiced
+netstat -ano | findstr ESTABLISHED
+
+tasklist /FI "PID eq 4304"
+
+tasklist /svc /FI "PID eq 4304"
+
+sc query WpnService
+
+wmic service where "name='WpnService'" get Name,DisplayName,State,StartMode,PathName
+
+ping 98.66.133.184
+
+Key Security Lesson
+An unfamiliar foreign IP should not automatically be considered malicious. During an investigation, I should correlate the IP, port, PID, process, service, executable path, and behavior before making a security judgment.
