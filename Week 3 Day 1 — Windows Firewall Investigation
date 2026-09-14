@@ -1,0 +1,53 @@
+Objective
+Learn how to investigate Windows Firewall profiles and rules, then trace a firewall rule to the associated port, service, process, and PID.
+1. Firewall Profile Check
+Command:
+Get-NetFirewallProfile
+Key findings:
+Domain profile: Enabled
+Private profile: Enabled
+Some individual settings showed NotConfigured
+Lesson: NotConfigured does not mean the firewall is disabled.
+2. Firewall Rule Investigation
+Command:
+Get-NetFirewallRule | Where-Object {$_.Enabled -eq "True"} | Select-Object -First 10 DisplayName, Direction, Action
+Investigated:
+mDNS (UDP-Out)
+Direction: Outbound
+Action: Allow
+Protocol: UDP
+Remote port: 5353
+Program: svchost.exe
+Service: Dnscache
+Conclusion: The rule is consistent with legitimate Windows networking/DNS-related activity.
+3. Inbound Firewall Investigation
+Investigated:
+Remote Assistance (DCOM-In)
+Findings:
+Direction: Inbound
+Action: Allow
+Protocol: TCP
+Local port: 135
+Service: RPCSS
+State: Running
+PID: 500
+Executable: C:\Windows\System32\svchost.exe
+4. PID Verification
+Command:
+netstat -ano | findstr ":135"
+Result:
+TCP    0.0.0.0:135    0.0.0.0:0    LISTENING    500
+TCP    [::]:135       [::]:0       LISTENING    500
+Important finding: The PID from RPCSS (500) matches the PID listening on TCP 135 (500).
+🔐 Final Investigation Chain
+Firewall Rule
+     ↓
+TCP Port 135
+     ↓
+RPCSS Service
+     ↓
+PID 500
+     ↓
+svchost.exe
+     ↓
+LISTENING
