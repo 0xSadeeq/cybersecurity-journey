@@ -1,0 +1,27 @@
+Objective
+To understand how Windows Firewall rules control network traffic and investigate a firewall rule by examining its direction, action, protocol, port, scope, program, and service.
+Practical Lab
+I opened Windows Defender Firewall with Advanced Security using wf.msc and investigated the Remote Assistance (DCOM-In) firewall rule.
+Rule Findings
+Enabled: Yes
+Action: Allow
+Direction: Inbound
+Profile: Domain
+Protocol: TCP
+Local Port: 135
+Remote IP: Any
+Program: svchost.exe
+Service: RpcSs
+Edge Traversal: Block
+Investigation
+The rule allows specific inbound TCP traffic through port 135. Port 135 is associated with Microsoft RPC (Remote Procedure Call) and DCOM functionality.
+The traffic is associated with svchost.exe, which is a legitimate Windows host process, and the RpcSs service, which is the Remote Procedure Call service.
+I also learned that a firewall rule allowing traffic does not automatically mean the traffic is malicious. The rule must be investigated based on its program, service, port, IP scope, profile, and purpose.
+SOC-Style Practice
+I investigated simulated firewall rules and identified a rule that required further investigation because it had:
+An unknown executable
+Inbound traffic allowed
+TCP port 4444
+A Public network profile
+Any remote IP address
+I learned that these indicators do not automatically prove that a rule is malicious. They indicate that further investigation is required.
