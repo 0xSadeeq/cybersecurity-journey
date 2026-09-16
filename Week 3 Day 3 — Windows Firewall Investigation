@@ -1,0 +1,95 @@
+
+Objective
+
+Investigate Windows inbound firewall rules by checking their ports, services, profiles, scope, and exposure.
+
+Practical Investigation
+
+1. WS-Discovery — UDP 3702
+
+- Action: Allow
+- Protocol: UDP
+- Port: 3702
+- Scope: Any / Any
+- Profile: Private
+- Service: "fdPHost"
+- Process: "svchost.exe"
+
+Finding: UDP 3702 is commonly used by WS-Discovery for network device discovery. "fdPHost" is a legitimate Windows Function Discovery service.
+
+Verdict: Normal Windows activity. Private profile limits exposure.
+
+2. Remote Assistance / DCOM-In
+
+- Action: Allow
+- Protocol: TCP
+- Port: 135
+- Scope: Any / Any
+- Profile: Domain
+- Edge traversal: Disabled
+- Service: RPCSS
+- Process: "svchost.exe"
+
+Finding: TCP 135 is used by Windows RPC/DCOM. RPCSS is a legitimate Windows service.
+
+Verdict: Normal Windows activity based on the investigated configuration.
+
+3. NetBIOS Name Service — UDP 137
+
+- Action: Allow
+- Protocol: UDP
+- Port: 137
+- Scope: Any / Any
+- Profile: Private
+- Program/Service: None specifically attached
+
+Finding: UDP 137 is associated with NetBIOS Name Service and can support local Windows network communication and name resolution.
+
+Verdict: Likely legitimate. No specific program/service attached does not automatically mean malicious.
+
+4. Cast to Device Streaming Server
+
+- Action: Allow
+- Protocol: TCP
+- Port: 10246
+- Scope: Any / Any
+- Profile: Public
+- Program: System
+- Edge traversal: Blocked
+
+Finding: This is a legitimate Windows Cast to Device function. However, allowing inbound traffic on a Public profile can increase the attack surface.
+
+Verdict: Legitimate feature, but preferably restricted to Private networks when Public-network casting is not required.
+
+5. Cast to Device UPnP Events
+
+- Action: Allow
+- Protocol: TCP
+- Port: 2869
+- Scope: Any / Any
+- Profile: Public
+- Program/Service: N/A
+- Edge traversal: Blocked
+
+Finding: TCP 2869 is associated with UPnP functionality used by Cast to Device.
+
+Verdict: Legitimate functionality, but restricting it to Private networks reduces unnecessary exposure.
+
+Key Knowledge
+
+Today I learned to investigate a firewall rule using:
+
+Rule → Protocol → Port → Scope → Profile → Edge Traversal → Program/Service → Purpose → Verdict
+
+Important Lessons
+
+- "svchost.exe" can legitimately host Windows services.
+- fdPHost supports Function Discovery.
+- UDP 3702 → WS-Discovery.
+- UDP 137 → NetBIOS Name Service.
+- TCP 135 → RPC/DCOM.
+- TCP 2869 → UPnP.
+- A legitimate Windows feature can still be unnecessarily exposed depending on the firewall profile.
+- Legitimate does not automatically mean secure in every configuration.
+- Public networks require more caution with inbound connections than Private or Domain networks.
+
