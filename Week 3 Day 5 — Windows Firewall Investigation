@@ -1,0 +1,60 @@
+Topic
+
+Windows Firewall Rules and Network Service Investigation
+
+What I Learned
+
+Today I continued investigating Windows Firewall inbound rules and learned how firewall rules control network traffic entering a computer.
+
+I learned how to examine:
+
+- Inbound/Outbound traffic
+- TCP and UDP protocols
+- Local and remote ports
+- Network profiles — Private/Public
+- Programs and Windows services associated with firewall rules
+- Allow vs Block actions
+- Service exposure and attack surface
+
+Practical Investigation
+
+I investigated Windows services and firewall rules related to Network Discovery, including:
+
+- WSD — Web Services on Devices
+- FDPHost — Function Discovery Provider Host
+- FDResPub — Function Discovery Resource Publication
+- UPnP / device discovery
+- Remote Desktop-related rules
+
+I learned that seeing an Allow rule does not automatically mean the rule is malicious. I need to investigate the service, port, protocol, profile, and scope before deciding whether the rule requires attention.
+
+Security Thinking
+
+One important lesson was:
+
+«A legitimate Windows service can still create security risk if it is unnecessarily exposed, especially on a Public network profile.»
+
+Therefore, during an investigation I should ask:
+
+1. Is the service legitimate?
+2. What does the service do?
+3. What port and protocol does it use?
+4. Is inbound access necessary?
+5. Which network profile allows it?
+6. Is the rule restricted to the required network or devices?
+7. Can the rule be blocked or limited without breaking required functionality?
+
+Key Knowledge Impact
+
+I am becoming more comfortable investigating firewall rules instead of simply assuming that an Allow rule is safe or a Block rule is dangerous.
+
+I can now connect:
+Firewall Rule → Port → Protocol → Program/Service → Network Profile → Exposure → Security Risk
+
+Documentation
+
+Screenshots of the investigated firewall rules and findings were saved as evidence for my cybersecurity portfolio/GitHub documentation.
+
+Day 5 Outcome
+
+I improved my practical understanding of Windows Firewall and how security analysts investigate network exposure and legitimate Windows services.
