@@ -1,0 +1,17 @@
+Firewall Investigation — Network Discovery (NB-Datagram-In)
+
+I investigated the Windows Firewall rule Network Discovery (NB-Datagram-In).
+
+- Status: Enabled
+- Action: Allow
+- Protocol: UDP
+- Port: 138
+- Program: System
+- Profile: Private
+- Scope: Local subnet
+
+Port 138 is associated with NetBIOS Datagram Service and can support Windows network communication. The rule is restricted to the Private profile and local subnet, which limits its exposure compared with allowing traffic from any remote network.
+
+Conclusion: The rule appears legitimate and appropriately scoped based on the evidence investigated. I would leave the rule enabled because blocking it could affect Windows network functionality, while its current scope limits unnecessary exposure.
+
+Key Lesson: A firewall rule should be assessed based on its service, port, profile, scope, purpose, and exposure—not simply because it belongs to Windows.
